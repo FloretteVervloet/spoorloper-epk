@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SPOORLOPER — a fever dream set to sound</title>
+  <meta name="description" content="Experimental noiserock from Ghent. Ghent's most ungoogleable sound.">
+  <meta property="og:title" content="SPOORLOPER — a fever dream set to sound">
+  <meta property="og:description" content="Experimental noiserock from Ghent. Eyes open, mind elsewhere.">
+  <meta property="og:image" content="assets/img/albumcover-web.jpg">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/png" href="assets/img/favicon.png">
+  <link rel="preload" href="assets/fonts/pandemic-webfont.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+  <!-- space-time ripple layer -->
+  <canvas id="ripple-canvas" aria-hidden="true"></canvas>
+
+  <!-- the end of everything: the TV switches off -->
+  <div id="tvoff" aria-hidden="true">
+    <div class="tvoff-panel tvoff-panel--top"></div>
+    <div class="tvoff-panel tvoff-panel--bottom"></div>
+    <div class="tvoff-line"></div>
+    <div class="tvoff-dot"></div>
+  </div>
+  <button id="wake-up" class="pandemic" aria-label="Wake up — restart the experience">wake up</button>
+
+  <!-- floating creatures layer -->
+  <div id="creatures" aria-hidden="true"></div>
+
+  <!-- sound toggle -->
+  <button id="sound-toggle" aria-label="Sound on/off" title="sound">
+    <span class="sound-label" id="sound-label">sound off</span>
+    <svg viewBox="0 0 100 100" aria-hidden="true">
+      <path class="bol-path" d="M50 12 C30 14 22 34 26 50 C29 61 38 66 42 74 C44 79 43 86 41 90 M50 12 C70 14 78 34 74 50 C71 61 62 66 58 74 C56 79 57 86 59 90 M41 90 L30 95 M59 90 L70 95" fill="none"/>
+    </svg>
+  </button>
+
+  <!-- bookings: always present, rides the right edge -->
+  <a id="bookings-link" href="#s-contact">Bookings &amp; Contact <span aria-hidden="true">&#8595;</span></a>
+
+  <main id="universe">
+
+    <!-- 1 · OPENING -->
+    <section class="scene scene--opening" id="s-opening">
+      <img class="letterlogo js-breathe" src="assets/img/letterlogo-pink.png" alt="Spoorloper">
+      <p class="opening-line pandemic">I've been expecting you.</p>
+      <div class="scroll-hint" aria-hidden="true">
+        <span class="scroll-hint__label">scroll to enter</span>
+        <span class="scroll-hint__arrow">&#8595;</span>
+      </div>
+    </section>
+
+    <!-- 2 · BASELINE -->
+    <section class="scene scene--baseline" id="s-baseline">
+      <img class="bol-anchor js-pulse" src="assets/img/bol-gold.png" alt="" aria-hidden="true">
+      <h1 class="baseline pandemic gold js-split">A fever dream set to sound.</h1>
+    </section>
+
+    <!-- 3 · BIO 1 -->
+    <section class="scene scene--bio" id="s-bio1">
+      <p class="bio-line pandemic magenta js-split">This is not just music.</p>
+    </section>
+
+    <!-- 4 · CLIP 1 — LIFTER (clip coming soon, no link yet) -->
+    <section class="scene scene--video" id="s-clip1" data-video-scene data-shrink>
+      <div class="video-frame">
+        <video class="clip-video" preload="none" playsinline loop
+               data-src="assets/video/clip-lifter.mp4"
+               poster="assets/video/clip-lifter-poster.jpg"></video>
+        <span class="video-link video-link--soon">
+          <span class="video-link__word pandemic">lifter</span>
+          <span class="video-link__platform">clip coming soon</span>
+        </span>
+        <div class="crt-flash" aria-hidden="true"></div>
+      </div>
+      <p class="keep-scrolling pandemic" aria-hidden="true">keep on scrolling</p>
+    </section>
+
+    <!-- 5 · BIO 2 -->
+    <section class="scene scene--bio" id="s-bio2">
+      <p class="bio-line bio-line--long lavender js-words">Echoes of broken machines, gasping vocals, glitch-ridden serenity and sudden violence.</p>
+    </section>
+
+    <!-- 6 · PRESS FACTS -->
+    <section class="scene scene--press" id="s-press">
+      <div class="press-facts">
+        <p class="press-fact">Experimental noiserock from Ghent.</p>
+      </div>
+    </section>
+
+    <!-- 6b · THE UNGOOGLEABLE LINE — dead center, a moment of its own -->
+    <section class="scene scene--bio" id="s-ungoogleable">
+      <p class="bio-line pandemic magenta ungoogleable">
+        <span class="ung-row">Ghent's most</span>
+        <span class="ung-row">ungoogleable sound.</span>
+      </p>
+    </section>
+
+    <!-- 7 · CLIP 2 — SWALLOW GOLD -->
+    <section class="scene scene--video" id="s-clip2" data-video-scene data-shrink>
+      <div class="video-frame">
+        <video class="clip-video" preload="none" playsinline loop
+               data-src="assets/video/clip-swallow-gold.mp4"
+               poster="assets/video/clip-swallow-gold-poster.jpg"></video>
+        <a class="video-link" href="https://www.youtube.com/watch?v=FGD1AuRsagQ" target="_blank" rel="noopener"
+           aria-label="Watch Swallow Gold on YouTube">
+          <span class="video-link__word pandemic">swallow gold</span>
+          <span class="video-link__platform">&#9654; watch on YouTube</span>
+        </a>
+        <div class="crt-flash" aria-hidden="true"></div>
+      </div>
+      <p class="keep-scrolling pandemic" aria-hidden="true">keep on scrolling</p>
+    </section>
+
+    <!-- 8 · BIO 3 -->
+    <section class="scene scene--bio" id="s-bio3">
+      <p class="bio-line pandemic gold js-breathe-text"><span class="breathes">Sometimes it breathes.</span> <span class="bites">Sometimes it bites.</span></p>
+    </section>
+
+    <!-- 9 · PRESS IMAGE + DOWNLOAD -->
+    <section class="scene scene--pressimage" id="s-pressimage">
+      <figure class="press-image">
+        <img src="assets/img/albumcover-web.jpg" alt="Spoorloper — album artwork: concentric tower under a pink sky with a ghost mask">
+        <a class="download-tag" href="assets/press/spoorloper-albumcover.jpg" download="spoorloper-press-image.jpg">
+          <span class="download-tag__word pandemic">Take this with you.</span>
+          <span class="download-tag__hint">&#10515; hi-res press image</span>
+        </a>
+      </figure>
+    </section>
+
+    <!-- 10 · REEL — INSTAGRAM -->
+    <section class="scene scene--reel" id="s-reel-ig" data-video-scene data-shrink>
+      <div class="reel-wrap">
+        <div class="phone phone--ig">
+          <div class="ig-top">
+            <span class="ig-title">Reels</span>
+            <svg class="ig-cam" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5.5" width="14" height="13" rx="3" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M16.5 10.5 L21.5 7.5 L21.5 16.5 L16.5 13.5 Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+          </div>
+          <video class="clip-video" preload="none" playsinline loop
+                 data-src="assets/video/reel-instagram.mp4"
+                 poster="assets/video/reel-instagram-poster.jpg"></video>
+          <div class="ig-side" aria-hidden="true">
+            <span class="ig-ic"><svg viewBox="0 0 24 24"><path d="M12 20.5 C7 16.5 3.5 13.3 3.5 9.6 C3.5 7 5.5 5 8 5 C9.6 5 11.1 5.9 12 7.2 C12.9 5.9 14.4 5 16 5 C18.5 5 20.5 7 20.5 9.6 C20.5 13.3 17 16.5 12 20.5 Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><b>2,417</b></span>
+            <span class="ig-ic"><svg viewBox="0 0 24 24"><path d="M12 3.5 C7 3.5 3 7.1 3 11.4 C3 13.9 4.3 16.1 6.4 17.5 L5.5 21 L9.3 19 C10.2 19.2 11.1 19.3 12 19.3 C17 19.3 21 15.7 21 11.4 C21 7.1 17 3.5 12 3.5 Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><b>188</b></span>
+            <span class="ig-ic"><svg viewBox="0 0 24 24"><path d="M21 3 L10 14 M21 3 L14.5 21 L10 14 L3 9.5 Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><b>share</b></span>
+            <span class="ig-ic ig-ic--dots"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="12" cy="19" r="1.6" fill="currentColor"/></svg></span>
+          </div>
+          <div class="ig-bottom" aria-hidden="true">
+            <div class="ig-user">
+              <span class="ig-avatar"><img src="assets/img/favicon.png" alt=""></span>
+              <span class="ig-handle">spoorloper</span>
+              <span class="ig-follow">Follow</span>
+            </div>
+            <div class="ig-audio"><svg viewBox="0 0 24 24"><path d="M9 18.5 L9 5.5 L20 3.5 L20 16.5 M9 10 L20 8" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="6.8" cy="18.5" r="2.6" fill="currentColor"/><circle cx="17.8" cy="16.5" r="2.6" fill="currentColor"/></svg><span class="ig-audio__marquee">spoorloper &middot; original audio</span></div>
+          </div>
+          <div class="crt-flash" aria-hidden="true"></div>
+        </div>
+        <a class="reel-open" href="https://www.instagram.com/spoorloper/" target="_blank" rel="noopener">watch on Instagram &#8599;</a>
+      </div>
+      <p class="keep-scrolling pandemic" aria-hidden="true">keep on scrolling</p>
+    </section>
+
+    <!-- 11 · BIO 4 -->
+    <section class="scene scene--gaze" id="s-bio4">
+      <div class="gaze-landscape" style="background-image:url('assets/img/landscape-pink.jpg')" aria-hidden="true"></div>
+      <p class="bio-line lavender js-words">You're welcome to gaze through my eyes. See what I see.</p>
+    </section>
+
+    <!-- 12 · CLIP 3 — HOMELESS PREACHER -->
+    <section class="scene scene--video" id="s-clip3" data-video-scene data-shrink>
+      <div class="video-frame">
+        <video class="clip-video" preload="none" playsinline loop
+               data-src="assets/video/clip-homeless.mp4"
+               poster="assets/video/clip-homeless-poster.jpg"></video>
+        <a class="video-link" href="https://www.youtube.com/watch?v=ICJWxCo2K9c" target="_blank" rel="noopener"
+           aria-label="Watch Homeless Preacher on YouTube">
+          <span class="video-link__word pandemic">homeless preacher</span>
+          <span class="video-link__platform">&#9654; watch on YouTube</span>
+        </a>
+        <div class="crt-flash" aria-hidden="true"></div>
+      </div>
+      <p class="keep-scrolling pandemic" aria-hidden="true">keep on scrolling</p>
+    </section>
+
+    <!-- 13 · BAND -->
+    <section class="scene scene--band" id="s-band">
+      <ul class="band-list">
+        <li class="band-member"><span class="band-member__name pandemic">Mick Swinnen</span><span class="band-member__role">vocals</span></li>
+        <li class="band-member"><span class="band-member__name pandemic">Kasper Van Esbroeck</span><span class="band-member__role">guitar</span></li>
+        <li class="band-member"><span class="band-member__name pandemic">Arne Vanhoutteghem</span><span class="band-member__role">bass, bass synth</span></li>
+        <li class="band-member"><span class="band-member__name pandemic">Jan Berckmans</span><span class="band-member__role">synth, percussion</span></li>
+        <li class="band-member"><span class="band-member__name pandemic">Joris Casier</span><span class="band-member__role">drums</span></li>
+      </ul>
+    </section>
+
+    <!-- 14 · REEL — TIKTOK -->
+    <section class="scene scene--reel" id="s-reel-tt" data-video-scene data-shrink>
+      <div class="reel-wrap">
+        <div class="phone phone--tt">
+          <div class="tt-top" aria-hidden="true"><span>Following</span><span class="tt-active">For You</span></div>
+          <video class="clip-video" preload="none" playsinline loop
+                 data-src="assets/video/reel-tiktok.mp4"
+                 poster="assets/video/reel-tiktok-poster.jpg"></video>
+          <div class="ig-side tt-side" aria-hidden="true">
+            <span class="tt-avatar"><img src="assets/img/favicon.png" alt=""></span>
+            <span class="ig-ic"><svg viewBox="0 0 24 24"><path d="M12 20.5 C7 16.5 3.5 13.3 3.5 9.6 C3.5 7 5.5 5 8 5 C9.6 5 11.1 5.9 12 7.2 C12.9 5.9 14.4 5 16 5 C18.5 5 20.5 7 20.5 9.6 C20.5 13.3 17 16.5 12 20.5 Z" fill="currentColor"/></svg><b>8,024</b></span>
+            <span class="ig-ic"><svg viewBox="0 0 24 24"><path d="M12 3.5 C7 3.5 3 7.1 3 11.4 C3 13.9 4.3 16.1 6.4 17.5 L5.5 21 L9.3 19 C10.2 19.2 11.1 19.3 12 19.3 C17 19.3 21 15.7 21 11.4 C21 7.1 17 3.5 12 3.5 Z" fill="currentColor"/></svg><b>241</b></span>
+            <span class="ig-ic"><svg viewBox="0 0 24 24"><path d="M21 3 L10 14 M21 3 L14.5 21 L10 14 L3 9.5 Z" fill="currentColor"/></svg><b>share</b></span>
+          </div>
+          <div class="ig-bottom" aria-hidden="true">
+            <div class="ig-user"><span class="ig-handle">@spoorloper</span></div>
+            <div class="ig-audio"><svg viewBox="0 0 24 24"><path d="M9 18.5 L9 5.5 L20 3.5 L20 16.5 M9 10 L20 8" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="6.8" cy="18.5" r="2.6" fill="currentColor"/><circle cx="17.8" cy="16.5" r="2.6" fill="currentColor"/></svg><span class="ig-audio__marquee">original sound &middot; spoorloper</span></div>
+          </div>
+          <div class="crt-flash" aria-hidden="true"></div>
+        </div>
+        <a class="reel-open" href="https://www.tiktok.com/@spoorloper" target="_blank" rel="noopener">watch on TikTok &#8599;</a>
+      </div>
+      <p class="keep-scrolling pandemic" aria-hidden="true">keep on scrolling</p>
+    </section>
+
+    <!-- 15 · SPOTIFY -->
+    <section class="scene scene--spotify" id="s-spotify">
+      <p class="listen-word pandemic gold js-split">Listen.</p>
+      <div class="spotify-card">
+        <img class="spotify-card__art" src="assets/img/albumcover-web.jpg" alt="Swallow Gold — album art">
+        <div class="spotify-card__meta">
+          <span class="spotify-card__track">Swallow Gold</span>
+          <span class="spotify-card__artist">Spoorloper</span>
+          <div class="spotify-card__wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+        <button class="spotify-card__play" id="spotify-play" aria-label="Play Swallow Gold">&#9654;</button>
+        <a class="spotify-card__open" href="https://open.spotify.com/artist/6OsSBB3548P20BXHnHRakf" target="_blank" rel="noopener">open in Spotify &#8599;</a>
+      </div>
+    </section>
+
+    <!-- 16 · CLIP 4 — NIGHTSHOP (placeholder video until final clip is delivered) -->
+    <section class="scene scene--video" id="s-clip4" data-video-scene data-shrink data-placeholder-clip>
+      <div class="video-frame">
+        <video class="clip-video" preload="none" playsinline loop
+               data-src="assets/video/clip-swallow-gold.mp4"
+               poster="assets/video/clip-swallow-gold-poster.jpg"></video>
+        <a class="video-link" href="https://www.youtube.com/watch?v=K2RUAEVE4kA" target="_blank" rel="noopener"
+           aria-label="Watch Nightshop on YouTube">
+          <span class="video-link__word pandemic">nightshop</span>
+          <span class="video-link__platform">&#9654; watch on YouTube</span>
+        </a>
+        <div class="crt-flash" aria-hidden="true"></div>
+      </div>
+      <p class="keep-scrolling pandemic" aria-hidden="true">keep on scrolling</p>
+    </section>
+
+    <!-- 17 · CONTACT -->
+    <section class="scene scene--contact" id="s-contact">
+      <img class="bol-anchor js-pulse" src="assets/img/bol-pink.png" alt="" aria-hidden="true">
+      <p class="contact-intro">For bookings, press &amp; everything else:</p>
+      <a class="contact-mail" href="mailto:spoorloper.dwaalt@gmail.com">spoorloper.dwaalt@gmail.com</a>
+      <nav class="socials" aria-label="Spoorloper on social media">
+        <a href="https://www.instagram.com/spoorloper/" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor"/></svg>
+        </a>
+        <a href="https://www.youtube.com/@Spoorloper" target="_blank" rel="noopener" aria-label="YouTube">
+          <svg viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="12.5" rx="3.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10.2 9.6 L15 12.2 L10.2 14.9 Z" fill="currentColor"/></svg>
+        </a>
+        <a href="https://www.tiktok.com/@spoorloper" target="_blank" rel="noopener" aria-label="TikTok">
+          <svg viewBox="0 0 24 24"><path d="M14.5 4 C14.8 6.2 16.4 7.8 18.8 8.1 L18.8 11 C17.2 11 15.7 10.4 14.6 9.6 L14.6 15.2 C14.6 18.2 12.3 20.5 9.4 20.5 C6.5 20.5 4.4 18.4 4.4 15.7 C4.4 13 6.6 10.9 9.5 10.9 L10.1 10.95 L10.1 13.9 L9.5 13.85 C8.3 13.85 7.4 14.7 7.4 15.7 C7.4 16.8 8.3 17.6 9.4 17.6 C10.7 17.6 11.6 16.6 11.6 15.2 L11.6 4 Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="https://open.spotify.com/artist/6OsSBB3548P20BXHnHRakf" target="_blank" rel="noopener" aria-label="Spotify">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M7.5 10.2 C10.5 9.3 14.2 9.6 16.8 11.2 M8 13 C10.5 12.3 13.5 12.6 15.7 13.9 M8.6 15.7 C10.6 15.2 12.8 15.4 14.5 16.4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        </a>
+      </nav>
+    </section>
+
+    <!-- 18 · CLOSER — the echo of the opening; after this, nothing -->
+    <section class="scene scene--closer" id="s-closer">
+      <div class="closer-lines">
+        <p class="closer-line pandemic">I don't remember you arriving.</p>
+        <p class="closer-line pandemic">I won't notice you leave.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="js/vendor/gsap.min.js"></script>
+  <script src="js/vendor/ScrollTrigger.min.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/ripple.js"></script>
+  <script src="js/creatures.js"></script>
+  <script src="js/scroll.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
