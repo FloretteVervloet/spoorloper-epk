@@ -24,9 +24,9 @@ window.SpoorAudio = (function () {
   let dead = false;         // the TV is off — nothing makes sound
   let focus = null;         // current audible video element (pinned scene)
   let trackPlaying = false; // Spotify card state
-  const listeners = { start: [], mute: [] };
+  const listeners = { start: [], mute: [], blocked: [] };
 
-  function emit(ev) { listeners[ev].forEach(fn => fn()); }
+  function emit(ev, arg) { listeners[ev].forEach(fn => fn(arg)); }
   function on(ev, fn) { listeners[ev].push(fn); }
 
   function fade(media, vol, dur = FADE) {
@@ -70,8 +70,28 @@ window.SpoorAudio = (function () {
     video.muted = muted;
     if (video.paused) video.volume = 0;
     const p = video.play();
-    if (p) p.catch(() => {});
+    if (p) p.catch(() => {
+      /* no user activation yet: play silently so the frame moves,
+         and tell the UI to offer "click to play" */
+      if (focus !== video) return;
+      video.muted = true;
+      const retry = video.play();
+      if (retry) retry.catch(() => {});
+      emit('blocked', video);
+    });
     fade(video, muted ? 0 : 1);
+  }
+
+  /* the "click to play" fallback: one deliberate click unlocks
+     the video with sound AND the whole soundscape behind it */
+  function enableFromVideo(video) {
+    muted = false;
+    nightshop.muted = false;
+    swallowGold.muted = false;
+    document.querySelectorAll('video').forEach(v => { v.muted = false; });
+    duckForVideo(video);   /* claims focus, plays with sound */
+    start();               /* underscore starts (stays ducked at 0) */
+    emit('mute');          /* repaint the toggle */
   }
 
   function releaseVideo(video) {
@@ -200,7 +220,7 @@ window.SpoorAudio = (function () {
   }
 
   return {
-    start, markActivated, duckForVideo, releaseVideo,
+    start, markActivated, duckForVideo, releaseVideo, enableFromVideo,
     toggleTrack, stopTrack, setMuted, onScrollVelocity, on,
     ampPop, powerBack, restartFromTop,
     get muted() { return muted; },

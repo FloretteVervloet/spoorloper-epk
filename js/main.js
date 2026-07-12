@@ -7,29 +7,13 @@
 (function () {
   const toggle = document.getElementById('sound-toggle');
 
-  /* --- start audio on the first real gesture ------------- */
-  function firstGesture() {
-    SpoorAudio.markActivated();
-    if (SpoorAudio.started) removeGestureListeners();
-  }
-  function removeGestureListeners() {
-    ['pointerdown', 'keydown', 'touchend'].forEach(ev =>
-      window.removeEventListener(ev, firstGesture));
-  }
-  ['pointerdown', 'keydown', 'touchend'].forEach(ev =>
-    window.addEventListener(ev, firstGesture, { passive: true }));
-
-  /* scroll won't grant audio permission everywhere, but try anyway —
-     on touch devices it does. */
-  window.addEventListener('scroll', () => SpoorAudio.start(), { passive: true, once: false });
-
   /* --- sound toggle --------------------------------------
-     The label promises "sound on" from the start — the music
-     falls in at the first scroll or tap (browsers demand a
-     gesture). Only a deliberate mute shows "sound off". */
+     Sound is OFF until the visitor chooses it. The opening
+     points at this button; until sound is on, the button
+     throbs for attention. */
   const soundLabel = document.getElementById('sound-label');
   function paintToggle() {
-    const on = !SpoorAudio.muted;
+    const on = SpoorAudio.started && !SpoorAudio.muted;
     toggle.classList.toggle('is-on', on);
     soundLabel.textContent = on ? 'sound on' : 'sound off';
   }
@@ -37,10 +21,23 @@
   SpoorAudio.on('start', paintToggle);
   SpoorAudio.on('mute', paintToggle);
 
-  /* the nudge has done its job once the music actually plays */
-  const soundHint = document.getElementById('sound-hint');
+  /* leaving for another tab (YouTube, Instagram, Spotify…):
+     mute everything so two sounds never play over each other.
+     The visitor flips it back on with one click when they return. */
+  document.addEventListener('click', e => {
+    const link = e.target.closest ? e.target.closest('a[target="_blank"]') : null;
+    if (link && SpoorAudio.started && !SpoorAudio.muted) SpoorAudio.setMuted(true);
+  }, true);
+
+  /* attention state: throbbing button + pointer in the opening,
+     both gone the moment sound actually plays */
+  toggle.classList.add('attract');
+  const soundPointer = document.getElementById('sound-pointer');
   SpoorAudio.on('start', () => {
-    gsap.to(soundHint, { opacity: 0, duration: 0.9, onComplete: () => soundHint.remove() });
+    toggle.classList.remove('attract');
+    if (soundPointer) {
+      gsap.to(soundPointer, { opacity: 0, duration: 0.7, onComplete: () => soundPointer.remove() });
+    }
   });
 
   toggle.addEventListener('click', () => {

@@ -197,16 +197,73 @@ body {
   font-size: 1.6rem;
   animation: hint-drop 1.8s ease-in-out infinite;
 }
-/* desktop nudge: wheel-scrolling can't unlock audio, one tap can */
-.sound-hint {
-  margin-top: .9rem;
-  font-family: var(--inter);
-  font-size: .68rem;
-  font-weight: 400;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: var(--lavender);
-  opacity: .5;
+/* the opening's crooked finger toward the sound button */
+#sound-pointer {
+  position: fixed;
+  right: 1.8rem;
+  bottom: 7.6rem;
+  z-index: 49;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: .5rem;
+  pointer-events: none;
+  max-width: 250px;
+  text-align: right;
+}
+.sound-pointer__label {
+  font-size: clamp(1.2rem, 2.6vw, 1.75rem);
+  color: var(--gold);
+  line-height: 1.15;
+  text-shadow: 0 0 26px rgba(255, 209, 0, .4);
+}
+.sound-pointer__arrow {
+  width: 72px;
+  height: auto;
+  margin-right: 6px;
+  color: var(--magenta);
+  filter: drop-shadow(0 0 10px rgba(232, 14, 136, .5));
+  transform-origin: 25% 10%;
+  animation: pointer-wiggle 2.1s ease-in-out infinite;
+}
+@keyframes pointer-wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  30% { transform: rotate(6deg); }
+  62% { transform: rotate(-4deg); }
+}
+
+/* the button itself demands attention until sound is on */
+#sound-toggle.attract {
+  animation: attract-throb 1.5s ease-in-out infinite;
+}
+@keyframes attract-throb {
+  0%, 100% { transform: scale(1) rotate(0deg); box-shadow: 0 0 0 rgba(232, 14, 136, 0); }
+  50% { transform: scale(1.18) rotate(-2.5deg); box-shadow: 0 0 34px rgba(232, 14, 136, .6); }
+}
+
+/* fallback on the videos: one honest button, then everything sounds */
+.click-to-play {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 6;
+  display: none;
+  background: rgba(7, 0, 8, .74);
+  border: 1px solid rgba(232, 14, 136, .65);
+  border-radius: 6px;
+  padding: .85rem 1.5rem .7rem;
+  color: var(--gold);
+  cursor: pointer;
+  font-size: clamp(1.3rem, 3vw, 1.9rem);
+  box-shadow: 0 0 42px rgba(232, 14, 136, .35);
+}
+.click-to-play.is-visible {
+  display: block;
+  animation: ctp-pulse 1.5s ease-in-out infinite;
+}
+@keyframes ctp-pulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.08); }
 }
 @keyframes hint-drop {
   0%, 100% { transform: translateY(0); opacity: 1; }
@@ -734,7 +791,8 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .scroll-hint__arrow, #sound-toggle.is-on svg, .spotify-card.is-playing .spotify-card__wave i,
   .ig-audio__marquee, #bookings-link:hover, .closer-line, #wake-up.is-live,
-  .scene--video .keep-scrolling { animation: none; }
+  .scene--video .keep-scrolling, .sound-pointer__arrow, #sound-toggle.attract,
+  .click-to-play.is-visible { animation: none; }
   .js-split .char, .js-words .word, .band-member, .creature { opacity: 1 !important; transform: none !important; }
 }
 
@@ -750,8 +808,10 @@ body {
   #bookings-link { font-size: .62rem; padding: .8rem .4rem; }
   /* on mobile the clip title sits bottom-left — the hint moves to the top */
   .keep-scrolling { bottom: auto; top: 10vh; }
-  /* mobile scrolls by touch — sound starts on the first scroll, no nudge needed */
-  .sound-hint { display: none; }
+  /* the pointer hugs the smaller corner button */
+  #sound-pointer { right: 1rem; bottom: 5.6rem; max-width: 190px; }
+  .sound-pointer__label { font-size: 1.15rem; }
+  .sound-pointer__arrow { width: 56px; }
   /* on the full-screen clips the gold blends into the footage:
      give the hint a dark scrim, lavender text and a pulse */
   .scene--video .keep-scrolling {

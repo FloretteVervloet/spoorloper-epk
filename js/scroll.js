@@ -73,6 +73,7 @@
     scrollTrigger: { trigger: opening, start: 'top top', end: 'bottom 35%', scrub: 0.6 }
   })
   .to('.scroll-hint', { opacity: 0, duration: 0.15 }, 0)
+  .to('#sound-pointer', { opacity: 0, duration: 0.15 }, 0)
   .to('.letterlogo', { scale: 1.35, opacity: 0, filter: 'blur(14px)', ease: 'power1.in' }, 0)
   .to('.opening-line', { opacity: 0, y: -80, ease: 'power1.in' }, 0.05);
 
@@ -105,16 +106,18 @@
     riseAndDissolve(el.closest('.scene'), words, { y: 40, stagger: 0.05 });
   });
 
-  /* ---------- breathes / bites ---------- */
+  /* ---------- breathes / bites ----------
+     Enters early and bites fast — fast scrollers must still catch
+     it — then holds almost to the end of the scene. */
   const bio3 = document.querySelector('#s-bio3 .bio-line');
   gsap.timeline({
-    scrollTrigger: { trigger: '#s-bio3', start: 'top 80%', end: 'bottom 5%', scrub: 0.8 }
+    scrollTrigger: { trigger: '#s-bio3', start: 'top 96%', end: 'bottom 8%', scrub: 0.4 }
   })
-  .from('#s-bio3 .breathes', { opacity: 0, scale: 0.8, transformOrigin: '50% 50%', ease: 'sine.out', duration: 0.3 })
-  .to('#s-bio3 .breathes', { scale: 1.06, yoyo: true, repeat: 1, duration: 0.18, ease: 'sine.inOut' })
-  .from('#s-bio3 .bites', { opacity: 0, scale: 2.6, rotation: -8, ease: 'power4.in', duration: 0.2 })
-  .to({}, { duration: 0.5 })
-  .to(bio3, { opacity: 0, y: -60, duration: 0.18 });
+  .from('#s-bio3 .breathes', { opacity: 0, scale: 0.8, transformOrigin: '50% 50%', ease: 'sine.out', duration: 0.2 })
+  .to('#s-bio3 .breathes', { scale: 1.06, yoyo: true, repeat: 1, duration: 0.11, ease: 'sine.inOut' })
+  .from('#s-bio3 .bites', { opacity: 0, scale: 2.6, rotation: -8, ease: 'power4.in', duration: 0.13 })
+  .to({}, { duration: 0.85 })
+  .to(bio3, { opacity: 0, y: -60, duration: 0.16 });
 
   /* ---------- press facts: appear and STAY readable ---------- */
   gsap.from('.press-fact', {
@@ -204,12 +207,23 @@
     const frame = scene.querySelector('.video-frame, .reel-wrap');
     const AUDIO_CUT = shrink ? 0.42 : 0.6; // progress where clip audio hands back
 
+    /* fallback for visitors who never enabled sound: the browser
+       blocks unmuted playback, so we offer one honest button —
+       click to play, and sound comes on for everything */
+    const ctp = document.createElement('button');
+    ctp.className = 'click-to-play';
+    ctp.innerHTML = '<span class="pandemic">&#9654;&nbsp; click to play</span>';
+    scene.querySelector('.video-frame, .phone').appendChild(ctp);
+    ctp.addEventListener('click', () => SpoorAudio.enableFromVideo(video));
+    SpoorAudio.on('blocked', v => { if (v === video) ctp.classList.add('is-visible'); });
+    SpoorAudio.on('start', () => ctp.classList.remove('is-visible'));
+
     let audible = false;
     function setAudible(on) {
       if (on === audible) return;
       audible = on;
       if (on) SpoorAudio.duckForVideo(video);
-      else SpoorAudio.releaseVideo(video);
+      else { SpoorAudio.releaseVideo(video); ctp.classList.remove('is-visible'); }
     }
 
     /* mobile scrolls tighter: shorter pins, same choreography —

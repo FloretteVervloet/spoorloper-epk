@@ -21,6 +21,20 @@
   <!-- space-time ripple layer -->
   <canvas id="ripple-canvas" aria-hidden="true"></canvas>
 
+  <!-- the opening points here: turn the sound on -->
+  <div id="sound-pointer" aria-hidden="true">
+    <span class="sound-pointer__label pandemic">Sound on for full experience</span>
+    <svg class="sound-pointer__arrow" viewBox="0 0 120 110" fill="none">
+      <!-- a crooked hand-drawn arrow curling down toward the button -->
+      <path d="M14 8 C 64 2, 30 52, 68 62 C 90 68, 96 78, 101 92"
+            stroke="currentColor" stroke-width="3.4" stroke-linecap="round"
+            pathLength="1"/>
+      <path d="M88 84 L 102 94 L 104 78"
+            stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"
+            pathLength="1"/>
+    </svg>
+  </div>
+
   <!-- the end of everything: the TV switches off -->
   <div id="tvoff" aria-hidden="true">
     <div class="tvoff-panel tvoff-panel--top"></div>
@@ -53,7 +67,6 @@
       <div class="scroll-hint" aria-hidden="true">
         <span class="scroll-hint__label">scroll to enter</span>
         <span class="scroll-hint__arrow">&#8595;</span>
-        <span class="sound-hint" id="sound-hint">sound needs one tap</span>
       </div>
     </section>
 
@@ -76,7 +89,7 @@
                poster="assets/video/clip-lifter-poster.jpg"></video>
         <span class="video-link video-link--soon">
           <span class="video-link__word pandemic">lifter</span>
-          <span class="video-link__platform">clip coming soon</span>
+          <span class="video-link__platform">soon available on all platforms</span>
         </span>
         <div class="crt-flash" aria-hidden="true"></div>
       </div>
