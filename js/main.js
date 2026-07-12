@@ -23,10 +23,13 @@
      on touch devices it does. */
   window.addEventListener('scroll', () => SpoorAudio.start(), { passive: true, once: false });
 
-  /* --- sound toggle -------------------------------------- */
+  /* --- sound toggle --------------------------------------
+     The label promises "sound on" from the start — the music
+     falls in at the first scroll or tap (browsers demand a
+     gesture). Only a deliberate mute shows "sound off". */
   const soundLabel = document.getElementById('sound-label');
   function paintToggle() {
-    const on = SpoorAudio.started && !SpoorAudio.muted;
+    const on = !SpoorAudio.muted;
     toggle.classList.toggle('is-on', on);
     soundLabel.textContent = on ? 'sound on' : 'sound off';
   }

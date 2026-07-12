@@ -263,12 +263,16 @@ body {
   left: 50%; bottom: 9vh;
   transform: translateX(-50%) rotate(-3deg);
   font-size: clamp(1.4rem, 3.4vw, 2.4rem);
+  line-height: 1.15;
+  text-align: center;
   color: var(--gold);
   opacity: 0;
   white-space: nowrap;
   pointer-events: none;
-  text-shadow: 0 0 30px rgba(255,209,0,.35);
+  text-shadow: 0 0 30px rgba(255,209,0,.35), 0 2px 20px rgba(7,0,8,.85);
+  z-index: 4;
 }
+.keep-scrolling span { display: block; }
 .video-frame video {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
@@ -609,16 +613,45 @@ body {
   flex-direction: column;
   gap: 2.2rem;
   align-items: center;
+  max-width: 100%;
   transform-origin: 50% 50%;
   will-change: transform, opacity;
 }
 .closer-line {
-  font-size: clamp(2rem, 5vw, 3.8rem);
+  font-family: var(--inter);
+  font-weight: 900;
+  font-size: clamp(1.7rem, 4.4vw, 3.4rem);
+  letter-spacing: .02em;
   color: var(--lavender);
   text-align: center;
-  max-width: 22ch;
+  max-width: min(24ch, 100%);
   line-height: 1.3;
-  text-shadow: 0 0 50px rgba(245,235,255,.25);
+  /* CRT: flicker + RGB-split distortion, like a signal about to die */
+  animation:
+    crt-flicker 4s steps(1, end) infinite,
+    crt-split 2.8s ease-in-out infinite;
+}
+.closer-line:last-child { animation-delay: .7s, 1.3s; }
+.closer-line .word { display: inline-block; margin-right: .34em; }
+.closer-line .word:last-child { margin-right: 0; }
+@keyframes crt-flicker {
+  0%   { opacity: 1; }
+  7%   { opacity: .82; }
+  8%   { opacity: 1; }
+  23%  { opacity: 1; }
+  24%  { opacity: .55; }
+  25%  { opacity: .95; }
+  26%  { opacity: 1; }
+  54%  { opacity: 1; }
+  55%  { opacity: .7; transform: translateX(2px) skewX(-1.5deg); }
+  56%  { opacity: 1; transform: none; }
+  79%  { opacity: 1; }
+  80%  { opacity: .88; transform: translateX(-2px); }
+  81%  { opacity: 1; transform: none; }
+}
+@keyframes crt-split {
+  0%, 100% { text-shadow: -2px 0 rgba(232,14,136,.75), 2px 0 rgba(80,220,255,.55), 0 0 40px rgba(245,235,255,.25); }
+  50%      { text-shadow: -4px 0 rgba(232,14,136,.9), 4px 0 rgba(80,220,255,.7), 0 0 60px rgba(245,235,255,.35); }
 }
 
 /* the TV switches off: black panels squeeze the screen into a
@@ -689,7 +722,7 @@ body {
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   .scroll-hint__arrow, #sound-toggle.is-on svg, .spotify-card.is-playing .spotify-card__wave i,
-  .ig-audio__marquee, #bookings-link:hover { animation: none; }
+  .ig-audio__marquee, #bookings-link:hover, .closer-line, #wake-up.is-live { animation: none; }
   .js-split .char, .js-words .word, .band-member, .creature { opacity: 1 !important; transform: none !important; }
 }
 
@@ -703,5 +736,24 @@ body {
   #sound-toggle svg { width: 30px; height: 30px; }
   .sound-label { font-size: .62rem; }
   #bookings-link { font-size: .62rem; padding: .8rem .4rem; }
-  .keep-scrolling { bottom: 14vh; }
+  /* on mobile the clip title sits bottom-left — the hint moves to the top */
+  .keep-scrolling { bottom: auto; top: 10vh; }
+
+  /* tighter dream on small screens: everything follows faster,
+     but pinned moments (opening, clips, reels, finale) keep their
+     full-screen weight — only the space BETWEEN moments shrinks */
+  .scene { padding: 6vh 6vw; }
+  .scene--baseline { min-height: 62vh; }
+  .scene--bio { min-height: 50vh; }
+  .scene--press, .scene--spotify { min-height: 58vh; }
+  .scene--gaze { min-height: 68vh; }
+  .scene--pressimage { min-height: 80vh; }
+  .scene--band { min-height: 72vh; }
+  .scene--contact { min-height: 86vh; }
+  .scene--opening, .scene--video, .scene--closer { min-height: 100vh; min-height: 100svh; }
+  .scene--reel { min-height: 100vh; min-height: 100svh; padding: 4vh 0; }
+  .scene--press { gap: 3vh; }
+  .press-facts { gap: 3.5vh; }
+  .scene--spotify { gap: 3vh; }
+  .band-list { gap: 3.6vh; }
 }

@@ -212,10 +212,15 @@
       else SpoorAudio.releaseVideo(video);
     }
 
+    /* mobile scrolls tighter: shorter pins, same choreography —
+       desktop keeps its exact original pacing */
+    const PIN_LEN = () => Math.round(window.innerHeight *
+      (window.innerWidth <= 640 ? (shrink ? 1.5 : 1.1) : (shrink ? 1.9 : 1.3)));
+
     ScrollTrigger.create({
       trigger: scene,
       start: 'top top',
-      end: () => '+=' + Math.round(window.innerHeight * (shrink ? 1.9 : 1.3)),
+      end: () => '+=' + PIN_LEN(),
       pin: true,
       anticipatePin: 1,
       invalidateOnRefresh: true,
@@ -233,15 +238,15 @@
         scrollTrigger: {
           trigger: scene,
           start: 'top top',
-          end: () => '+=' + Math.round(window.innerHeight * 1.9),
+          end: () => '+=' + PIN_LEN(),
           scrub: 0.5,
         }
       })
-      /* 0–.38: full-screen watching */
+      /* 0–.38: full-screen watching — the hint surfaces right away */
       .to({}, { duration: 0.38 })
+      .to(hint, { opacity: 1, duration: 0.08 }, 0.12)
       /* .38–.72: the frame pulls away from you */
-      .to(frame, { scale: 0.3, ease: 'power1.in', duration: 0.34 })
-      .to(hint, { opacity: 1, duration: 0.08 }, 0.46)
+      .to(frame, { scale: 0.3, ease: 'power1.in', duration: 0.34 }, 0.38)
       /* .72–.8: CRT off — collapse to a bright line, then a dot */
       .to(frame, { scaleY: 0.015, scaleX: 0.42, ease: 'power3.in', duration: 0.08 }, 0.72)
       .to(flash, { opacity: 1, duration: 0.04 }, 0.72)
@@ -271,7 +276,7 @@
   const closerLines = document.querySelectorAll('.closer-line');
   const line1Words = splitWords(closerLines[0]);
   const line2Words = splitWords(closerLines[1]);
-  const CLOSER_LEN = () => Math.round(window.innerHeight * 2.8);
+  const CLOSER_LEN = () => Math.round(window.innerHeight * (window.innerWidth <= 640 ? 2.2 : 2.8));
   const wakeBtn = document.getElementById('wake-up');
 
   const closerTl = gsap.timeline({
