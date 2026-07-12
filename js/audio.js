@@ -67,29 +67,37 @@ window.SpoorAudio = (function () {
     gsap.killTweensOf(nightshop);
     fade(nightshop, 0, 0.6);
     if (window.loadVideo) window.loadVideo(video);
-    video.muted = muted;
+    /* the visuals ALWAYS run: without sound permission we simply
+       play muted (allowed everywhere) — the dream never freezes */
+    const soundless = !started || muted;
+    video.muted = soundless;
     if (video.paused) video.volume = 0;
     const p = video.play();
     if (p) p.catch(() => {
-      /* no user activation yet: play silently so the frame moves,
-         and tell the UI to offer "click to play" */
+      /* even muted playback refused (very locked-down browser):
+         force-mute and try once more */
       if (focus !== video) return;
       video.muted = true;
       const retry = video.play();
       if (retry) retry.catch(() => {});
-      emit('blocked', video);
     });
-    fade(video, muted ? 0 : 1);
+    /* invite sound on the playing video — only for visitors who
+       never made a sound choice yet */
+    if (!started && !activated) emit('blocked', video);
+    fade(video, soundless ? 0 : 1);
   }
 
-  /* the "click to play" fallback: one deliberate click unlocks
-     the video with sound AND the whole soundscape behind it */
+  /* the "sound on" chip on a playing video: one click unmutes it
+     IN PLACE (no re-scroll) and unlocks the whole soundscape */
   function enableFromVideo(video) {
     muted = false;
+    activated = true;
     nightshop.muted = false;
     swallowGold.muted = false;
     document.querySelectorAll('video').forEach(v => { v.muted = false; });
-    duckForVideo(video);   /* claims focus, plays with sound */
+    duckForVideo(video);   /* claims focus; video keeps playing */
+    video.muted = false;   /* unmute mid-play, right where they are */
+    fade(video, 1);
     start();               /* underscore starts (stays ducked at 0) */
     emit('mute');          /* repaint the toggle */
   }

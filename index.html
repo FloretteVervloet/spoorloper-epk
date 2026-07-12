@@ -35,6 +35,21 @@
     </svg>
   </div>
 
+  <!-- rescue hatch: shown only when the experience failed to load
+       (some built-in browsers block fonts, images or scripts) -->
+  <div id="browser-rescue" hidden>
+    <div class="rescue-box">
+      <svg class="rescue-bol" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M50 12 C30 14 22 34 26 50 C29 61 38 66 42 74 C44 79 43 86 41 90 M50 12 C70 14 78 34 74 50 C71 61 62 66 58 74 C56 79 57 86 59 90 M41 90 L30 95 M59 90 L70 95" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+      </svg>
+      <h2 class="rescue-title pandemic">this browser keeps its eyes closed.</h2>
+      <p class="rescue-body">Half of this universe didn't make it through &mdash; the sound, the visions, the creatures. You're standing outside a dream.</p>
+      <p class="rescue-body rescue-body--strong">Open it in Chrome. That's where it lets you in.</p>
+      <a id="rescue-chrome" class="rescue-btn" hidden>open in Chrome</a>
+      <button id="rescue-continue" class="rescue-continue" type="button">wander in anyway &#8595;</button>
+    </div>
+  </div>
+
   <!-- the end of everything: the TV switches off -->
   <div id="tvoff" aria-hidden="true">
     <div class="tvoff-panel tvoff-panel--top"></div>
@@ -84,7 +99,7 @@
     <!-- 4 · CLIP 1 — LIFTER (clip coming soon, no link yet) -->
     <section class="scene scene--video" id="s-clip1" data-video-scene data-shrink>
       <div class="video-frame">
-        <video class="clip-video" preload="none" playsinline loop
+        <video class="clip-video" preload="none" playsinline loop muted
                data-src="assets/video/clip-lifter.mp4"
                poster="assets/video/clip-lifter-poster.jpg"></video>
         <span class="video-link video-link--soon">
@@ -119,7 +134,7 @@
     <!-- 7 · CLIP 2 — SWALLOW GOLD -->
     <section class="scene scene--video" id="s-clip2" data-video-scene data-shrink>
       <div class="video-frame">
-        <video class="clip-video" preload="none" playsinline loop
+        <video class="clip-video" preload="none" playsinline loop muted
                data-src="assets/video/clip-swallow-gold.mp4"
                poster="assets/video/clip-swallow-gold-poster.jpg"></video>
         <a class="video-link" href="https://www.youtube.com/watch?v=FGD1AuRsagQ" target="_blank" rel="noopener"
@@ -156,7 +171,7 @@
             <span class="ig-title">Reels</span>
             <svg class="ig-cam" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5.5" width="14" height="13" rx="3" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M16.5 10.5 L21.5 7.5 L21.5 16.5 L16.5 13.5 Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
           </div>
-          <video class="clip-video" preload="none" playsinline loop
+          <video class="clip-video" preload="none" playsinline loop muted
                  data-src="assets/video/reel-instagram.mp4"
                  poster="assets/video/reel-instagram-poster.jpg"></video>
           <div class="ig-side" aria-hidden="true">
@@ -189,7 +204,7 @@
     <!-- 12 · CLIP 3 — HOMELESS PREACHER -->
     <section class="scene scene--video" id="s-clip3" data-video-scene data-shrink>
       <div class="video-frame">
-        <video class="clip-video" preload="none" playsinline loop
+        <video class="clip-video" preload="none" playsinline loop muted
                data-src="assets/video/clip-homeless.mp4"
                poster="assets/video/clip-homeless-poster.jpg"></video>
         <a class="video-link" href="https://www.youtube.com/watch?v=ICJWxCo2K9c" target="_blank" rel="noopener"
@@ -218,7 +233,7 @@
       <div class="reel-wrap">
         <div class="phone phone--tt">
           <div class="tt-top" aria-hidden="true"><span>Following</span><span class="tt-active">For You</span></div>
-          <video class="clip-video" preload="none" playsinline loop
+          <video class="clip-video" preload="none" playsinline loop muted
                  data-src="assets/video/reel-tiktok.mp4"
                  poster="assets/video/reel-tiktok-poster.jpg"></video>
           <div class="ig-side tt-side" aria-hidden="true">
@@ -256,7 +271,7 @@
     <!-- 16 · CLIP 4 — NIGHTSHOP (placeholder video until final clip is delivered) -->
     <section class="scene scene--video" id="s-clip4" data-video-scene data-shrink>
       <div class="video-frame">
-        <video class="clip-video" preload="none" playsinline loop
+        <video class="clip-video" preload="none" playsinline loop muted
                data-src="assets/video/clip-nightshop.mp4"
                poster="assets/video/clip-nightshop-poster.jpg"></video>
         <a class="video-link" href="https://www.youtube.com/watch?v=K2RUAEVE4kA" target="_blank" rel="noopener"
@@ -307,5 +322,43 @@
   <script src="js/creatures.js"></script>
   <script src="js/scroll.js"></script>
   <script src="js/main.js"></script>
+
+  <!-- rescue detector: deliberately plain ES5 in its own tag, so it
+       still parses and runs when everything above has died -->
+  <script>
+  (function () {
+    function show() {
+      var el = document.getElementById('browser-rescue');
+      if (!el || !el.hidden) return;
+      el.hidden = false;
+      var btn = document.getElementById('rescue-chrome');
+      if (btn && /android/i.test(navigator.userAgent)) {
+        var u = window.location;
+        var scheme = u.protocol === 'https:' ? 'https' : 'http';
+        btn.href = 'intent://' + u.host + u.pathname + u.search +
+                   '#Intent;scheme=' + scheme + ';package=com.android.chrome;end';
+        btn.hidden = false;
+      }
+      var cont = document.getElementById('rescue-continue');
+      if (cont) cont.onclick = function () { el.hidden = true; };
+    }
+    function broken() {
+      try {
+        if (!window.gsap || !window.ScrollTrigger) return true;
+        var all = window.ScrollTrigger.getAll();
+        var pins = false;
+        for (var i = 0; i < all.length; i++) { if (all[i].pin) { pins = true; break; } }
+        if (!pins) return true;
+        var logo = document.querySelector('.letterlogo');
+        if (logo && (!logo.complete || logo.naturalWidth === 0)) return true;
+        return false;
+      } catch (e) { return true; }
+    }
+    function check() { if (broken()) show(); }
+    if (document.readyState === 'complete') { setTimeout(check, 1800); }
+    else { window.addEventListener('load', function () { setTimeout(check, 1800); }); }
+    window.SpoorRescue = { show: show, broken: broken };
+  })();
+  </script>
 </body>
 </html>

@@ -207,12 +207,12 @@
     const frame = scene.querySelector('.video-frame, .reel-wrap');
     const AUDIO_CUT = shrink ? 0.42 : 0.6; // progress where clip audio hands back
 
-    /* fallback for visitors who never enabled sound: the browser
-       blocks unmuted playback, so we offer one honest button —
-       click to play, and sound comes on for everything */
+    /* the video always plays (muted if sound was never enabled);
+       this chip invites one click that unmutes it in place and
+       unlocks the whole soundscape */
     const ctp = document.createElement('button');
     ctp.className = 'click-to-play';
-    ctp.innerHTML = '<span class="pandemic">&#9654;&nbsp; click to play</span>';
+    ctp.innerHTML = '<span class="pandemic">&#9836;&nbsp; sound on</span>';
     scene.querySelector('.video-frame, .phone').appendChild(ctp);
     ctp.addEventListener('click', () => SpoorAudio.enableFromVideo(video));
     SpoorAudio.on('blocked', v => { if (v === video) ctp.classList.add('is-visible'); });

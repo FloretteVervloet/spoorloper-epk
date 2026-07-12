@@ -20,7 +20,9 @@
   --gold: #FFD100;
   --magenta: #E80E88;
   --black: #070008;
-  --pandemic: 'Pandemic', cursive;
+  /* fallback is Inter, NOT cursive: if the brush font fails to load,
+     titles degrade to clean sans instead of an off-brand script font */
+  --pandemic: 'Pandemic', 'Inter', system-ui, sans-serif;
   --inter: 'Inter', system-ui, sans-serif;
 }
 
@@ -842,6 +844,72 @@ body {
   .scene--spotify { gap: 3vh; }
   .band-list { gap: 3.6vh; }
 }
+
+/* ---------- browser rescue ----------
+   Shown only when the experience demonstrably failed to load.
+   Styled to survive with system fonts and zero images. */
+#browser-rescue {
+  position: fixed; inset: 0;
+  z-index: 200;
+  display: flex; align-items: center; justify-content: center;
+  padding: 1.5rem;
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 100%, rgba(88,5,31,.5), transparent 65%),
+    #070008;
+}
+#browser-rescue[hidden] { display: none; }
+.rescue-box {
+  max-width: 26rem;
+  text-align: center;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 1.1rem;
+}
+.rescue-bol {
+  width: 54px; height: 54px;
+  color: var(--magenta);
+  filter: drop-shadow(0 0 14px rgba(232,14,136,.5));
+}
+.rescue-title {
+  font-size: clamp(1.7rem, 6.5vw, 2.6rem);
+  color: var(--gold);
+  line-height: 1.15;
+}
+.rescue-body {
+  font-family: var(--inter);
+  font-size: .95rem;
+  line-height: 1.55;
+  color: var(--lavender);
+  opacity: .85;
+}
+.rescue-body--strong { opacity: 1; font-weight: 600; }
+.rescue-btn {
+  display: inline-block;
+  margin-top: .4rem;
+  padding: .85rem 1.7rem;
+  border: 1px solid var(--magenta);
+  border-radius: 6px;
+  background: rgba(232,14,136,.12);
+  color: var(--gold);
+  font-family: var(--inter);
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  box-shadow: 0 0 34px rgba(232,14,136,.3);
+}
+.rescue-btn[hidden] { display: none; }
+.rescue-continue {
+  margin-top: .8rem;
+  background: none; border: none;
+  color: var(--lavender);
+  opacity: .5;
+  font-family: var(--inter);
+  font-size: .8rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.rescue-continue:hover { opacity: .9; }
 
 /* the clip hint's heartbeat (used on mobile) */
 @keyframes hint-throb {
