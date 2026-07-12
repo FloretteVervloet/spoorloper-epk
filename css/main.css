@@ -197,6 +197,17 @@ body {
   font-size: 1.6rem;
   animation: hint-drop 1.8s ease-in-out infinite;
 }
+/* desktop nudge: wheel-scrolling can't unlock audio, one tap can */
+.sound-hint {
+  margin-top: .9rem;
+  font-family: var(--inter);
+  font-size: .68rem;
+  font-weight: 400;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--lavender);
+  opacity: .5;
+}
 @keyframes hint-drop {
   0%, 100% { transform: translateY(0); opacity: 1; }
   50% { transform: translateY(12px); opacity: .35; }
@@ -722,7 +733,8 @@ body {
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   .scroll-hint__arrow, #sound-toggle.is-on svg, .spotify-card.is-playing .spotify-card__wave i,
-  .ig-audio__marquee, #bookings-link:hover, .closer-line, #wake-up.is-live { animation: none; }
+  .ig-audio__marquee, #bookings-link:hover, .closer-line, #wake-up.is-live,
+  .scene--video .keep-scrolling { animation: none; }
   .js-split .char, .js-words .word, .band-member, .creature { opacity: 1 !important; transform: none !important; }
 }
 
@@ -738,6 +750,19 @@ body {
   #bookings-link { font-size: .62rem; padding: .8rem .4rem; }
   /* on mobile the clip title sits bottom-left — the hint moves to the top */
   .keep-scrolling { bottom: auto; top: 10vh; }
+  /* mobile scrolls by touch — sound starts on the first scroll, no nudge needed */
+  .sound-hint { display: none; }
+  /* on the full-screen clips the gold blends into the footage:
+     give the hint a dark scrim, lavender text and a pulse */
+  .scene--video .keep-scrolling {
+    color: var(--lavender);
+    background: rgba(7, 0, 8, .62);
+    padding: .55rem 1.1rem .45rem;
+    border-radius: 4px;
+    text-shadow: 0 0 18px rgba(232, 14, 136, .8);
+    box-shadow: 0 0 30px rgba(232, 14, 136, .25);
+    animation: hint-throb 1.6s ease-in-out infinite;
+  }
 
   /* tighter dream on small screens: everything follows faster,
      but pinned moments (opening, clips, reels, finale) keep their
@@ -756,4 +781,10 @@ body {
   .press-facts { gap: 3.5vh; }
   .scene--spotify { gap: 3vh; }
   .band-list { gap: 3.6vh; }
+}
+
+/* the clip hint's heartbeat (used on mobile) */
+@keyframes hint-throb {
+  0%, 100% { transform: translateX(-50%) rotate(-3deg) scale(1); }
+  50% { transform: translateX(-50%) rotate(-3deg) scale(1.09); }
 }

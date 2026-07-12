@@ -37,6 +37,12 @@
   SpoorAudio.on('start', paintToggle);
   SpoorAudio.on('mute', paintToggle);
 
+  /* the nudge has done its job once the music actually plays */
+  const soundHint = document.getElementById('sound-hint');
+  SpoorAudio.on('start', () => {
+    gsap.to(soundHint, { opacity: 0, duration: 0.9, onComplete: () => soundHint.remove() });
+  });
+
   toggle.addEventListener('click', () => {
     if (!SpoorAudio.started) {
       SpoorAudio.setMuted(false);   // also starts
