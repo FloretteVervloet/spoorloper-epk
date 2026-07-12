@@ -327,9 +327,10 @@
        still parses and runs when everything above has died -->
   <script>
   (function () {
+    var dismissed = false;
     function show() {
       var el = document.getElementById('browser-rescue');
-      if (!el || !el.hidden) return;
+      if (!el || !el.hidden || dismissed) return;
       el.hidden = false;
       var btn = document.getElementById('rescue-chrome');
       if (btn && /android/i.test(navigator.userAgent)) {
@@ -340,23 +341,47 @@
         btn.hidden = false;
       }
       var cont = document.getElementById('rescue-continue');
-      if (cont) cont.onclick = function () { el.hidden = true; };
+      if (cont) cont.onclick = function () { dismissed = true; el.hidden = true; };
     }
     function broken() {
       try {
+        /* 1 · the engine itself */
         if (!window.gsap || !window.ScrollTrigger) return true;
         var all = window.ScrollTrigger.getAll();
         var pins = false;
         for (var i = 0; i < all.length; i++) { if (all[i].pin) { pins = true; break; } }
         if (!pins) return true;
+        /* 2 · the logo image really rendered */
         var logo = document.querySelector('.letterlogo');
-        if (logo && (!logo.complete || logo.naturalWidth === 0)) return true;
+        if (logo && logo.complete && logo.naturalWidth === 0) return true;
+        /* 3 · the brush font: if font loading has settled and
+           Pandemic still isn't available, this browser blocks fonts */
+        if (document.fonts && document.fonts.check &&
+            document.fonts.status === 'loaded' &&
+            !document.fonts.check('16px Pandemic')) return true;
         return false;
       } catch (e) { return true; }
     }
     function check() { if (broken()) show(); }
-    if (document.readyState === 'complete') { setTimeout(check, 1800); }
-    else { window.addEventListener('load', function () { setTimeout(check, 1800); }); }
+    /* run even in browsers where the load event never fires */
+    if (document.readyState !== 'loading') { setTimeout(check, 2600); }
+    else { document.addEventListener('DOMContentLoaded', function () { setTimeout(check, 2600); }); }
+    window.addEventListener('load', function () { setTimeout(check, 1500); });
+    /* 4 · scrub sanity: past one screen of scrolling the opening line
+       must have faded — if it's still fully visible, the animation
+       engine is dead in this browser even though it loaded */
+    function scrollProbe() {
+      if (window.scrollY > window.innerHeight * 1.2) {
+        window.removeEventListener('scroll', scrollProbe);
+        setTimeout(function () {
+          try {
+            var line = document.querySelector('.opening-line');
+            if (line && parseFloat(window.getComputedStyle(line).opacity) > 0.9) show();
+          } catch (e) {}
+        }, 700);
+      }
+    }
+    window.addEventListener('scroll', scrollProbe);
     window.SpoorRescue = { show: show, broken: broken };
   })();
   </script>
